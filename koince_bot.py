@@ -41,7 +41,10 @@ def analyze_news_reason(title, content):
 def get_binance_data(symbol="BTCUSDT", interval="1d", limit=30):
     try:
         url = f"https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit={limit}"
-        response = requests.get(url, timeout=10)
+        headers = {
+            "User-Agent": "Mozilla/5.0"
+        }
+        response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
         data = response.json()
         df = pd.DataFrame(data, columns=[
@@ -56,6 +59,8 @@ def get_binance_data(symbol="BTCUSDT", interval="1d", limit=30):
     except Exception as e:
         print(f"{symbol} için fiyat verisi alınamadı: {e}")
         return None
+
+        
 
 # --- GİRİŞ ve HEDEF HESAPLA ---
 def calculate_levels(df):
